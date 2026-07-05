@@ -1,0 +1,103 @@
+﻿@{
+    ViewData["Title"] = "Iniciar Sesión";
+
+    // Captura de errores desde el controlador para cambiar estilos visuales en tiempo de ejecución
+    bool tieneErrorUsuario = ViewBag.ErrorUsuario != null;
+    bool tieneErrorPassword = ViewBag.ErrorPassword != null;
+
+    // CORRECCIÓN COMPLETA: Validar el método antes de intentar acceder a la colección Form
+    string usuarioDigitado = Context.Request.Method == "POST" && Context.Request.HasFormContentType
+        ? Context.Request.Form["username"].ToString()
+        : "";
+
+    // MITIGACIÓN OWASP: Captura el flag desde la cookie temporal cifrada interna del servidor
+    bool mostrarAlertaExpirada = TempData["SesionExpirada"] != null && (bool)TempData["SesionExpirada"];
+}
+
+@if (mostrarAlertaExpirada)
+{
+    <div class="position-fixed bottom-0 end-0 m-4 p-3 border-start border-primary border-4 shadow bg-white rounded d-flex align-items-center gap-3"
+         style="z-index: 1060; max-width: 350px; background-color: #e6f2ff !important;">
+        <span style="font-size: 1.25rem;">ℹ️</span>
+        <div class="small text-dark fw-medium" style="font-family: sans-serif; line-height: 1.4;">
+            Su sesión ha expirado debido a inactividad. Por favor, inicie sesión nuevamente.
+        </div>
+    </div>
+}
+
+<div class="container">
+    <div class="row justify-content-center align-items-center" style="min-height: calc(100vh - 144px); padding: 20px 0;">
+        <div class="col-12 col-sm-10 col-md-7 col-lg-4">
+
+            <div class="card p-4 shadow-sm border-0 bg-white mb-3" style="border-radius: 12px;">
+                <div class="card-body">
+
+                    <div class="btn-group w-100 mb-4" role="group">
+                        <button type="button" class="btn btn-secondary btn-sm fw-semibold active" style="background-color: #6c757d; border: none;">DNI</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm fw-semibold" style="border-color: #ced4da; color: #6c757d;">CE</button>
+                    </div>
+
+                    <form action="@Url.Action("Login", "Account")" method="post">
+
+                        <div class="mb-3">
+                            <label for="username" class="form-label small fw-semibold text-secondary m-1">Usuario</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text bg-white border-end-0 text-muted" style="border-color: @(tieneErrorUsuario ? "#dc3545" : "#ced4da");">
+                                    👤
+                                </span>
+                                <input type="text" id="username" name="username"
+                                       class="form-control border-start-0 @(tieneErrorUsuario ? "is-invalid" : "")"
+                                       placeholder="Ingresar usuario" required value="@usuarioDigitado" />
+
+                                @if (tieneErrorUsuario)
+                                {
+                                    <div class="invalid-feedback d-block small text-danger mt-1 fw-medium">
+                                        🔴 @ViewBag.ErrorUsuario
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label small fw-semibold text-secondary m-1">Contraseña</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text bg-white border-end-0 text-muted" style="border-color: @(tieneErrorPassword ? "#dc3545" : "#ced4da");">
+                                    🔒
+                                </span>
+                                <input type="password" id="password" name="password"
+                                       class="form-control border-start-0 border-end-0 @(tieneErrorPassword ? "is-invalid" : "")"
+                                       placeholder="Ingresar contraseña" required />
+                                <span class="input-group-text bg-white border-start-0 text-muted" style="cursor: pointer; border-color: @(tieneErrorPassword ? "#dc3545" : "#ced4da");">
+                                    👁️
+                                </span>
+
+                                @if (tieneErrorPassword)
+                                {
+                                    <div class="invalid-feedback d-block small text-danger mt-1 fw-medium">
+                                        🔴 @ViewBag.ErrorPassword
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="text-start mb-4">
+                            <a href="#" class="text-decoration-none small fw-semibold" style="color: #0056b3; font-size: 0.85rem;">¿Olvidó su contraseña?</a>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold" style="background-color: #0056b3; border: none; color: white;">
+                            Ingresar
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+
+            <div class="card p-3 shadow-sm border-0 text-center bg-white" style="border-radius: 12px;">
+                <p class="mb-0 small text-muted">
+                    🎧 ¿Necesita ayuda?, <a href="#" class="text-decoration-none fw-semibold" style="color: #0056b3;">contacte con el área de soporte.</a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>

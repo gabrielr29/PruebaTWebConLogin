@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Aplicativo X</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    <style>
+        body {
+            background-image: url('@Url.Content("~/images/Illustration.png")');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER: Bloqueado a 72px de alto con fondo sólido para rellenar pantallas ultra-anchas */
+        header {
+            width: 100%;
+            height: 72px;
+            background-color: #92141d; /* Rojo institucional exacto */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+            header img {
+                max-width: 1440px;
+                width: 100%;
+                height: 72px;
+                object-fit: contain; /* Evita que el logo o el "?" del extremo se agiganten */
+            }
+
+        .contenido-central {
+            flex: 1 0 auto;
+            width: 100%;
+        }
+
+        /* FOOTER: Bloqueado a 72px con fondo blanco limpio de respaldo */
+        footer {
+            width: 100%;
+            height: 72px;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            margin-top: auto;
+            border-top: 1px solid #dee2e6;
+        }
+
+            footer img {
+                max-width: 1440px;
+                width: 100%;
+                height: 72px;
+                object-fit: contain; /* Mantiene los logos ministeriales en su escala real */
+            }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="~/images/Header.png" alt="Header Oficial" />
+    </header>
+
+    <div class="contenido-central">
+        @RenderBody()
+    </div>
+
+    <footer>
+        <img src="~/images/Footer.png" alt="Footer Oficial" />
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
