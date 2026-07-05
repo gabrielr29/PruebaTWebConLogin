@@ -108,6 +108,16 @@ namespace PruebaTécnicaWebConLogin.Controllers
             return RedirectToAction("Login", "Account");
         }
 
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            // Limpia de forma segura todas las variables de sesión del servidor
+            HttpContext.Session.Clear();
+
+            // Redirige al inicio de sesión de manera limpia
+            return RedirectToAction("Login", "Account");
+        }
+
 
         // GET: AccountControllerç
         public ActionResult Index()
